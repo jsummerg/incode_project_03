@@ -21,13 +21,19 @@ app.get('/schedules', (req, res) => {
 
 
 
-// app.get('/users/:id/schedules', (req, res) => {
-//     res.send(data.user.params.schedules)
-// })
+app.get('/users/:id/schedules', (req, res) => { // TODO: Change id param to only digits
+    const id = Number(req.params.id)
+    let schedules = []
+    for (let i = 0; i < data.schedules.length; i++) {
+        const currentSchedules = data.schedules[i]
+        if (currentSchedules.user_id === id) {
+            schedules.push(currentSchedules)
+        }
+    }
+    res.send(schedules)
+})
 
-// app.get ('/users/1/schedules', (req, res) => {
-//     res.send('Hello')
-// })
+
 
 // app.get('/users/:name/:email', (req, res) => {
 //     res.send(req.params)
