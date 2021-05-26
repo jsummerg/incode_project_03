@@ -2,10 +2,24 @@ const express = require('express')
 const app = express()
 
 const PORT = process.env.PORT || 3000
-const data = require('./data')
 
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+const data = require('./data') // Acess our data.js file
+
+app.set('view engine', 'ejs')
+
+// Step 1
 app.get('/', (req, res) => {
-    res.send('Welcome to our schedule website')
+    // res.send('Welcome to our schedule website')
+
+    res.render('pages/index', {
+        documentTitle: 'Homepage',
+        name: 'James Summergreene',
+        day: "Wednesday",
+        users: data.users
+    })
 })
 
 app.get('/users', (req, res) => {
@@ -14,7 +28,6 @@ app.get('/users', (req, res) => {
 })
 
 app.get('/schedules', (req, res) => {
-    console.log(data.schedules)
     res.send(data.schedules)
 })
 
@@ -33,6 +46,9 @@ app.get('/users/:id/schedules', (req, res) => { // TODO: Change id param to only
     res.send(schedules)
 })
 
+app.post('/schedules', (req, res) => {
+    res.send(req.body)
+})
 
 
 // app.get('/users/:name/:email', (req, res) => {
