@@ -1,22 +1,46 @@
-var express = require('express')
-var app = express()
-const port = 3000
-const data = require('./data.js')
+const express = require('express')
+const app = express()
+
+const PORT = process.env.PORT || 3000
+const data = require('./data')
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Welcome to our schedule website')
 })
 
-app.get('/test', (req, res) => {
-    console.log(data)
+app.get('/users', (req, res) => {
     console.log(data.users)
-    res.send('Nice Job James!')
+    res.send(data.users)
 })
 
-app.get('/test/:id', (req, res) => {
-    res.send(req.params.id)
+app.get('/schedules', (req, res) => {
+    console.log(data.schedules)
+    res.send(data.schedules)
 })
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  })
+
+
+
+// app.get('/users/:id/schedules', (req, res) => {
+//     res.send(data.user.params.schedules)
+// })
+
+// app.get ('/users/1/schedules', (req, res) => {
+//     res.send('Hello')
+// })
+
+// app.get('/users/:name/:email', (req, res) => {
+//     res.send(req.params)
+// })
+
+// app.get('/users/:query', (req, res) => {
+//     res.send()
+//     req.query()
+// })
+
+
+app.listen(PORT, () => {
+    console.log(`App listening at http://localhost:${PORT}`)
+})
+
+// for each
