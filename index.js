@@ -67,6 +67,5 @@ app.post('/schedules', (req, res) => {
     res.send(req.body) // sends the user schedule info
 })
 
-// #TODO: look into for each
 
 // curl -d "user_id=1&day=2&start_at=9AM&end_at=2PM" -X POST localhost:3000/schedules
