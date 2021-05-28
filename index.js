@@ -1,3 +1,4 @@
+// Step 1
 const express = require('express')
 const app = express()
 
@@ -7,17 +8,23 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 const data = require('./data') // Acess our data.js file
-
 app.set('view engine', 'ejs')
 
-// Step 1
-app.get('/', (req, res) => {
-    // res.send('Welcome to our schedule website')
+app.listen(PORT, () => {
+    console.log(`App listening at http://localhost:${PORT}`)
+})
 
+
+// Password encryption
+const bcrypt = require('bcrypt')
+const saltRounds = 10
+
+
+// Step 2
+app.get('/', (req, res) => {
     res.render('pages/index', {
         documentTitle: 'Homepage',
         name: 'James Summergreene',
-        day: "Wednesday",
         users: data.users
     })
 })
@@ -32,7 +39,16 @@ app.get('/schedules', (req, res) => {
 })
 
 
-
+// Step 3
+app.get('/users/:id', (req, res) => {
+    const id = Number(req.params.id)
+    if (data.users[id]) {
+        res.send(data.users[id])
+    }
+    else {
+        res.send("User not found")
+    }
+})
 
 app.get('/users/:id/schedules', (req, res) => { // TODO: Change id param to only digits
     const id = Number(req.params.id)
@@ -46,23 +62,14 @@ app.get('/users/:id/schedules', (req, res) => { // TODO: Change id param to only
     res.send(schedules)
 })
 
-app.post('/schedules', (req, res) => {
-    res.send(req.body)
+
+// Step 4
+app.post('/users', (req, res) => {
+    const plainPassword = req.body.password
+    const hash = bcrypt.hashSync(plainPassword, saltRounds) // encrypts password
+    req.body.password = hash // changes the password in the request to it's hashed version
+    data.users.push(req.body) // Inputs the info into the database
+    res.send(req.body) //sends the user info with the hashed password to the database
 })
 
-
-// app.get('/users/:name/:email', (req, res) => {
-//     res.send(req.params)
-// })
-
-// app.get('/users/:query', (req, res) => {
-//     res.send()
-//     req.query()
-// })
-
-
-app.listen(PORT, () => {
-    console.log(`App listening at http://localhost:${PORT}`)
-})
-
-// for each
+// #TODO: look into for each
