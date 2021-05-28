@@ -1,4 +1,4 @@
-// Step 1
+// Foundation
 const express = require('express')
 const app = express()
 
@@ -20,7 +20,8 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 
 
-// Step 2
+// Step 1
+// Get requests
 app.get('/', (req, res) => {
     res.render('pages/index', {
         documentTitle: 'Homepage',
@@ -38,7 +39,7 @@ app.get('/schedules', (req, res) => {
 })
 
 
-// Step 3
+// Get specific requests
 app.get('/users/:id', (req, res) => {
     const id = Number(req.params.id)
     res.send(data.users[id] ? data.users[id] : "User not found")
@@ -55,8 +56,7 @@ app.get('/users/:id/schedules', (req, res) => { // TODO: Change id param to only
     res.send(newSchedules.length ? newSchedules : 'User has no schedules booked') // conditional ternary operator, can replace else if statements that use the same operator in the outcome Eg: res.send
 })
 
-
-// Step 4
+// Post requests
 app.post('/users', (req, res) => {
     const hash = bcrypt.hashSync(req.body.password, saltRounds) // encrypts password
     req.body.password = hash // changes the password in the request to it's hashed version
@@ -70,7 +70,3 @@ app.post('/schedules', (req, res) => {
     data.schedules.push(req.body) // Inputs the schedule info into the database
     res.send(req.body) // sends the user schedule info
 })
-
-// #TODO: look into for each
-
-// curl -d "user_id=1&day=2&start_at=9AM&end_at=2PM" -X POST localhost:3000/schedules
