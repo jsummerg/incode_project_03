@@ -1,18 +1,30 @@
-// Foundation
+// express setup
 const express = require('express')
 const app = express()
 
+
+// set port to 3000 unless there's an enviromental port
 const PORT = process.env.PORT || 3000
-
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-
-const data = require('./data') // Acess our data.js file
-app.set('view engine', 'ejs')
 
 app.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`)
 })
+
+
+// postgres setup
+const db = require('./database.js')
+
+app.use(express.static('public'))
+
+// Body query
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+const data = require('./data') // Acess our data.js file
+
+
+// ejs settup
+app.set('view engine', 'ejs')
 
 
 // Password encryption
@@ -23,11 +35,20 @@ const saltRounds = 10
 // Step 1
 // Get requests
 app.get('/', (req, res) => {
-    res.render('pages/index', {
-        documentTitle: 'Homepage',
-        name: 'James Summergreene',
-        users: data.users
+    db.any('SELECT * FROM schedules;')
+    .then((schedules) => {
+        console.log(schedules)    
+        res.render('pages/index', {
+            documentTitle: 'Homepage',
+            user_id: '#TODO',
+            day: '#TODO',
+            schedules: schedules
+        })
     })
+    .catch((err) => {
+        res.send(err)
+    })
+
 })
 
 app.get('/users', (req, res) => {
@@ -70,3 +91,6 @@ app.post('/schedules', (req, res) => {
     data.schedules.push(req.body) // Inputs the schedule info into the database
     res.send(req.body) // sends the user schedule info
 })
+
+// Project 3C
+// Step 1

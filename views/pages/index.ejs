@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title><%=documentTitle%></title>
 </head>
 <body>
-    <h1>Hello <%=name%></h1>
+    <h1>Hello</h1>
     <p>How is your day going?</p>
 
-    <h2>Here are all the users</h2>
-    <%for (let i = 0; i < users.length; i++) { %>
-        <p><strong>First name:</strong> <%=users[i].firstname%></p>
-        <p><strong>Last name:</strong> <%=users[i].lastname%></p>
-        <p><strong>Email:</strong> <%=users[1].email%></p>
+    <h2>Here are all the schedules</h2>
+    <%for (let i = 0; i < schedules.length; i++) { %>
+        <div class="flex">
+            <p><strong>ID:</strong> <%=schedules[i].id%></p>
+            <p><strong>User ID:</strong> <%=schedules[i].user_id%></p>
+            <p><strong>Day:</strong> <%=schedules[1].day%></p>
+            <p><strong>Start at:</strong> <%=schedules[i].start_at%></p>
+            <p><strong>End At:</strong> <%=schedules[1].end_at%></p>
+        </div>
     <% } %>
 
 </body>
