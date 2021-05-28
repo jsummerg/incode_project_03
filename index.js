@@ -22,11 +22,6 @@ const saltRounds = 10
 
 // Step 2
 app.get('/', (req, res) => {
-    // res.render('pages/index', {
-    //     documentTitle: 'Homepage',
-    //     name: 'James Summergreene',
-    //     users: data.users
-    // })
     res.send("Welcome to our schedule website")
 })
 
