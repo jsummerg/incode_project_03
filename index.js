@@ -22,15 +22,15 @@ const saltRounds = 10
 
 // Step 2
 app.get('/', (req, res) => {
-    res.render('pages/index', {
-        documentTitle: 'Homepage',
-        name: 'James Summergreene',
-        users: data.users
-    })
+    // res.render('pages/index', {
+    //     documentTitle: 'Homepage',
+    //     name: 'James Summergreene',
+    //     users: data.users
+    // })
+    res.send("Welcome to our schedule website")
 })
 
 app.get('/users', (req, res) => {
-    console.log(data.users)
     res.send(data.users)
 })
 
@@ -42,34 +42,36 @@ app.get('/schedules', (req, res) => {
 // Step 3
 app.get('/users/:id', (req, res) => {
     const id = Number(req.params.id)
-    if (data.users[id]) {
-        res.send(data.users[id])
-    }
-    else {
-        res.send("User not found")
-    }
+    res.send(data.users[id] ? data.users[id] : "User not found")
 })
 
 app.get('/users/:id/schedules', (req, res) => { // TODO: Change id param to only digits
     const id = Number(req.params.id)
-    let schedules = []
-    for (let i = 0; i < data.schedules.length; i++) {
-        const currentSchedules = data.schedules[i]
-        if (currentSchedules.user_id === id) {
-            schedules.push(currentSchedules)
+    let newSchedules = [] 
+    data.schedules.forEach (schedule => { // replaces the for loop to check through each element, schedule knows which value its on
+        if (schedule.user_id === id){
+            newSchedules.push(schedule)
         }
-    }
-    res.send(schedules)
+    })
+    res.send(newSchedules.length ? newSchedules : 'User has no schedules booked') // conditional ternary operator, can replace else if statements that use the same operator in the outcome Eg: res.send
 })
 
 
 // Step 4
 app.post('/users', (req, res) => {
-    const plainPassword = req.body.password
-    const hash = bcrypt.hashSync(plainPassword, saltRounds) // encrypts password
+    const hash = bcrypt.hashSync(req.body.password, saltRounds) // encrypts password
     req.body.password = hash // changes the password in the request to it's hashed version
     data.users.push(req.body) // Inputs the info into the database
     res.send(req.body) //sends the user info with the hashed password to the database
 })
 
+app.post('/schedules', (req, res) => {
+    req.body.user_id = Number(req.body.user_id)
+    req.body.day = Number(req.body.day)
+    data.schedules.push(req.body) // Inputs the schedule info into the database
+    res.send(req.body) // sends the user schedule info
+})
+
 // #TODO: look into for each
+
+// curl -d "user_id=1&day=2&start_at=9AM&end_at=2PM" -X POST localhost:3000/schedules
