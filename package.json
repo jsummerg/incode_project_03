@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create-database": "psql -U postgres -h localhost -f sql/create_database.sql",
-    "create-schedules": "psql -U postgres -h localhost -d mcoffee -f sql/create_schedules.sql",
-    "seed-schedules": "psql -U postgres -h localhost -d mcoffee -f sql/seed_schedules.sql",
+    "create-database": "set PGPASSWORD=12345&&psql -U postgres -h localhost -f sql/create_database.sql",
+    "create-schedules": "set PGPASSWORD=12345&&psql -U postgres -h localhost -d mcoffee -f sql/create_schedules.sql",
+    "seed-schedules": "set PGPASSWORD=12345&&psql -U postgres -h localhost -d mcoffee -f sql/seed_schedules.sql",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -92,5 +92,26 @@ app.post('/schedules', (req, res) => {
     res.send(req.body) // sends the user schedule info
 })
 
+// New
+
+app.get('/user/new', (req, res) => {
+    res.render('prages/newUsers', {
+        documentTitle: 'New Users'
+    })
+})
+
+app.post('/user/new', (req, res) => {
+    console.log(req.body)
+    const user_id = Number(req.body.user_id)
+    const day = Number(req.body.day)
+    db.any('INSERT INTO schedules(user_id, day) VALUES ($1 $2)', [user_id, day])
+    .then((data) => {
+        res.redirect('/')
+    })
+    .catch((err) => {
+        res.send(err.message)
+    })
+})
+
 // Project 3C
 // Step 1
